@@ -5,6 +5,7 @@ ADD config-cloud.xml credentials.xml /opt/openshift/
 # Install additional plugins and modify files
 RUN mkdir -p /opt/openshift/plugins && \
           cat /opt/openshift/credentials.xml > /opt/openshift/configuration/credentials.xml && \
+	  cat /opt/openshift/config-cloud.xml > /opt/openshift/configuration/config.xml && \
           curl -sSL -f https://updates.jenkins-ci.org/download/plugins/swarm/2.0/swarm.hpi -o /opt/openshift/plugins/swarm.jpi && \
 		  curl -sSL -f https://updates.jenkins-ci.org/download/plugins/durable-task/1.7/durable-task.hpi -o /opt/openshift/plugins/durable-task.jpi && \
 		  curl -sSL -f https://updates.jenkins-ci.org/download/plugins/credentials/1.24/credentials.hpi -o /opt/openshift/plugins/credentials.jpi && \
