@@ -1,6 +1,6 @@
 #!/bin/bash
 
-master_username=${JENKINS_USERNAME:-"admin"}
+master_username=${JENKINS_USERNAME:-"grajaiya"}
 master_password=${JENKINS_PASSWORD:-"password"}
 slave_executors=${EXECUTORS:-"1"}
 
@@ -23,7 +23,37 @@ if [ ! -z $JENKINS_SECRET ] && [ ! -z $JENKINS_JNLP_URL ]; then
 		URL="-url $JENKINS_URL"
 	fi
 
-	exec java $JAVA_OPTS -cp $JAR hudson.remoting.jnlp.Main -headless $TUNNEL $URL -jar-cache $HOME "$@"
+	if [ -n "$JENKINS_NAME" ]; then
+		JENKINS_AGENT_NAME="$JENKINS_NAME"
+	fi	
+
+	if [ -z "$JNLP_PROTOCOL_OPTS" ]; then
+		echo "Warning: JnlpProtocol3 is disabled by default, use JNLP_PROTOCOL_OPTS to alter the behavior"
+		JNLP_PROTOCOL_OPTS="-Dorg.jenkinsci.remoting.engine.JnlpProtocol3.disabled=true"
+	fi
+
+	# If both required options are defined, do not pass the parameters
+	OPT_JENKINS_SECRET=""
+	if [ -n "$JENKINS_SECRET" ]; then
+		if [[ "$@" != *"${JENKINS_SECRET}"* ]]; then
+			OPT_JENKINS_SECRET="${JENKINS_SECRET}"
+		else
+			echo "Warning: SECRET is defined twice in command-line arguments and the environment variable"
+		fi
+	fi
+	
+	OPT_JENKINS_AGENT_NAME=""
+	if [ -n "$JENKINS_AGENT_NAME" ]; then
+		if [[ "$@" != *"${JENKINS_AGENT_NAME}"* ]]; then
+			OPT_JENKINS_AGENT_NAME="${JENKINS_AGENT_NAME}"
+		else
+			echo "Warning: AGENT_NAME is defined twice in command-line arguments and the environment variable"
+		fi
+	fi
+
+	# exec java $JAVA_OPTS -cp $JAR hudson.remoting.jnlp.Main -headless $TUNNEL $URL -jar-cache $HOME "$@"
+	exec java $JAVA_OPTS $JNLP_PROTOCOL_OPTS -cp $JAR hudson.remoting.jnlp.Main -headless $TUNNEL $URL $OPT_JENKINS_SECRET $OPT_JENKINS_AGENT_NAME "$@"
+
 
 elif [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
 
