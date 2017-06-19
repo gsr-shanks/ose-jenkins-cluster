@@ -21,7 +21,7 @@
 		        { "ip": "${JENKINS_IP}" }
 		      ],
 		      "ports":  [
-		        { "port": 8080, "name": "${JENKINS_SERVICE_NAME}" }
+		        { "port": 443, "name": "${JENKINS_SERVICE_NAME}" }
 		      ]
 		    }
 		  ]
@@ -37,8 +37,8 @@
 		      {
 		        "name": "${JENKINS_SERVICE_NAME}",
 		        "protocol": "TCP",
-		        "port": 8080,
-		        "targetPort": 8080,
+		        "port": 443,
+		        "targetPort": 443,
 		        "nodePort": 0
 		      }
 		    ]

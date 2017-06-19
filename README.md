@@ -43,7 +43,7 @@ Each template contains several parameters that can be modified to modify and tai
 |APPLICATION_HOSTNAME|Hostname to access Jenkins|&lt;application-name&gt;.&lt;project&gt;.&lt;default-domain-suffix&gt;|
 |password|Password securing the admin account of Jenkins|password|
 |JENKINS_SERVICE_ACCOUNT|OpenShift service account injected into the Jenkins master|default|
-|GIT_URI|Url of this Git repository|https://github.com/sabre1041/ose-jenkins-cluster.git|
+|GIT_URI|Url of this Git repository|https://github.com/gsr-shanks/ose-jenkins-cluster.git|
 |GIT_REF|Git Branch|master|
 |EXECUTORS|Number of executors for each Jenkins Swarm slave|1|
 |SLAVE_RECCURENCE_PERIOD|Interval of time to check whether to provision additional slave nodes|500|
